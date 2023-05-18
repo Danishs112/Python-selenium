@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
 from base_class import BasePage
-from selenium.webdriver import ActionChains
+from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.support.select import Select
 from pyautogui import moveTo
 from selenium.webdriver.support import expected_conditions as EC
@@ -375,4 +375,19 @@ def geolocation():
     assert "maps" in current_url
 
 
-geolocation()
+# geolocation()
+
+
+def horizontal_slider():
+    page.waitForVisibility("xpath", '//*[text()="Horizontal Slider"]')
+    webElement = page.constructElement("xpath", '//*[text()="Horizontal Slider"]')
+    page.click(webElement)
+
+    slider = driver.find_element(By.TAG_NAME,'input')
+    for index in range(0,8):
+        slider.send_keys(Keys.ARROW_RIGHT)
+
+    time.sleep(12)
+
+
+horizontal_slider()
