@@ -10,6 +10,7 @@ from base_class import BasePage
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.select import Select
 from pyautogui import moveTo
+from selenium.webdriver.support import expected_conditions as EC
 
 driver = webdriver.Chrome(service=Service("C:\\Users\pc\\Downloads\\chromedriver_win32 (1)\\chromedriver.exe"))
 
@@ -322,7 +323,7 @@ def nestedFrames():
     driver.switch_to.frame(iframe)
     left_iframe = driver.find_element(By.NAME, "frame-left")
     driver.switch_to.frame(left_iframe)
-    test = driver.find_element(By.CSS_SELECTOR,'body:nth-child(2)')
+    test = driver.find_element(By.CSS_SELECTOR, 'body:nth-child(2)')
     assert test.text == "LEFT"
 
     driver.switch_to.default_content()
@@ -351,4 +352,27 @@ def nestedFrames():
     assert test.text == "BOTTOM"
 
 
-nestedFrames()
+# nestedFrames()
+
+
+def iframe():
+    pass
+
+
+# iframe()
+
+
+def geolocation():
+    page.waitForVisibility("xpath", '//*[text()="Geolocation"]')
+    webElement = page.constructElement("xpath", '//*[text()="Geolocation"]')
+    page.click(webElement)
+    button = driver.find_element(By.CSS_SELECTOR, "#content button")
+    button.click()
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="map-link"]//a')))
+    link_text = driver.find_element(By.XPATH, '//*[@id="map-link"]//a')
+    link_text.click()
+    current_url = driver.current_url
+    assert "maps" in current_url
+
+
+geolocation()
