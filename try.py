@@ -1,6 +1,4 @@
 import time
-from tkinter import Button
-import os
 from selenium import webdriver
 from selenium.common import TimeoutException, NoSuchFrameException
 from selenium.webdriver.chrome.service import Service
@@ -307,7 +305,50 @@ def forgotPassword():
     action = ActionChains(driver)
     action.click(retrieve_button).perform()
     time.sleep(5)
-    ele = driver.find_element(By.TAG_NAME,"h1")
+    ele = driver.find_element(By.TAG_NAME, "h1")
     assert ele.is_displayed()
 
-forgotPassword()
+
+# forgotPassword()
+
+
+def nestedFrames():
+    page.waitForVisibility("xpath", '//*[text()="Frames"]')
+    webElement = page.constructElement("xpath", '//*[text()="Frames"]')
+    page.click(webElement)
+    element = driver.find_element(By.LINK_TEXT, 'Nested Frames')
+    element.click()
+    iframe = driver.find_element(By.NAME, "frame-top")
+    driver.switch_to.frame(iframe)
+    left_iframe = driver.find_element(By.NAME, "frame-left")
+    driver.switch_to.frame(left_iframe)
+    test = driver.find_element(By.CSS_SELECTOR,'body:nth-child(2)')
+    assert test.text == "LEFT"
+
+    driver.switch_to.default_content()
+
+    iframe = driver.find_element(By.NAME, "frame-top")
+    driver.switch_to.frame(iframe)
+    left_iframe = driver.find_element(By.NAME, "frame-middle")
+    driver.switch_to.frame(left_iframe)
+    test = driver.find_element(By.CSS_SELECTOR, 'body:nth-child(2)')
+    assert test.text == "MIDDLE"
+
+    driver.switch_to.default_content()
+
+    iframe = driver.find_element(By.NAME, "frame-top")
+    driver.switch_to.frame(iframe)
+    left_iframe = driver.find_element(By.NAME, "frame-right")
+    driver.switch_to.frame(left_iframe)
+    test = driver.find_element(By.CSS_SELECTOR, 'body:nth-child(2)')
+    assert test.text == "RIGHT"
+
+    driver.switch_to.default_content()
+
+    iframe = driver.find_element(By.NAME, "frame-bottom")
+    driver.switch_to.frame(iframe)
+    test = driver.find_element(By.CSS_SELECTOR, 'body:nth-child(2)')
+    assert test.text == "BOTTOM"
+
+
+nestedFrames()
