@@ -1,7 +1,7 @@
 import time
 from telnetlib import EC
 from tkinter import Button
-
+import os
 from selenium import webdriver
 from selenium.common import TimeoutException, NoSuchFrameException
 from selenium.webdriver.chrome.service import Service
@@ -250,9 +250,36 @@ def exitIntent():
     webElement = page.constructElement("xpath", '//*[text()="Exit Intent"]')
     page.click(webElement)
     moveTo(600, 0)
-    time.sleep(3)
     modal_element = driver.find_element(By.CLASS_NAME,'modal')
     status = modal_element.is_displayed()
     assert status is True
 
-exitIntent()
+# exitIntent()
+
+
+def fileDownload():
+    page.waitForVisibility("xpath", '//*[text()="File Download"]')
+    webElement = page.constructElement("xpath", '//*[text()="File Download"]')
+    page.click(webElement)
+    webElements = driver.find_elements(By.TAG_NAME,"a")
+    for element in webElements:
+        print(element.text)
+    ele = driver.find_element(By.XPATH,'//*[text()="index.html"]')
+    ele.click()
+
+# fileDownload()
+
+
+def fileUpload():
+    page.waitForVisibility("xpath", '//*[text()="File Upload"]')
+    webElement = page.constructElement("xpath", '//*[text()="File Upload"]')
+    page.click(webElement)
+    file_upload_button = driver.find_element(By.ID,"file-upload")
+    file_upload_button.send_keys("E:\pythonProject\pythonProject\dummy.jpg")
+    upload_button = page.constructElement("id","file-submit")
+    upload_button.click()
+    WebDriverWait(driver, 10).until(lambda d: page.constructElement("id","uploaded-files").is_displayed())
+    time.sleep(10)
+
+
+fileUpload()
