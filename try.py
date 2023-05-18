@@ -1,5 +1,4 @@
 import time
-from telnetlib import EC
 from tkinter import Button
 import os
 from selenium import webdriver
@@ -250,9 +249,10 @@ def exitIntent():
     webElement = page.constructElement("xpath", '//*[text()="Exit Intent"]')
     page.click(webElement)
     moveTo(600, 0)
-    modal_element = driver.find_element(By.CLASS_NAME,'modal')
+    modal_element = driver.find_element(By.CLASS_NAME, 'modal')
     status = modal_element.is_displayed()
     assert status is True
+
 
 # exitIntent()
 
@@ -261,11 +261,12 @@ def fileDownload():
     page.waitForVisibility("xpath", '//*[text()="File Download"]')
     webElement = page.constructElement("xpath", '//*[text()="File Download"]')
     page.click(webElement)
-    webElements = driver.find_elements(By.TAG_NAME,"a")
+    webElements = driver.find_elements(By.TAG_NAME, "a")
     for element in webElements:
         print(element.text)
-    ele = driver.find_element(By.XPATH,'//*[text()="index.html"]')
+    ele = driver.find_element(By.XPATH, '//*[text()="index.html"]')
     ele.click()
+
 
 # fileDownload()
 
@@ -274,13 +275,39 @@ def fileUpload():
     page.waitForVisibility("xpath", '//*[text()="File Upload"]')
     webElement = page.constructElement("xpath", '//*[text()="File Upload"]')
     page.click(webElement)
-    file_upload_button = driver.find_element(By.ID,"file-upload")
+    file_upload_button = driver.find_element(By.ID, "file-upload")
     file_upload_button.send_keys("E:\pythonProject\pythonProject\dummy.jpg")
-    upload_button = page.constructElement("id","file-submit")
+    upload_button = page.constructElement("id", "file-submit")
     upload_button.click()
-    WebDriverWait(driver, 10).until(lambda d: page.constructElement("id","uploaded-files").is_displayed())
+    WebDriverWait(driver, 10).until(lambda d: page.constructElement("id", "uploaded-files").is_displayed())
     time.sleep(10)
 
 
 # fileUpload()
 
+
+def floatingMenu():
+    page.waitForVisibility("xpath", '//*[text()="Floating Menu"]')
+    webElement = page.constructElement("xpath", '//*[text()="Floating Menu"]')
+    page.click(webElement)
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight")
+
+
+# floatingMenu()
+
+
+def forgotPassword():
+    page.waitForVisibility("xpath", '//*[text()="Forgot Password"]')
+    webElement = page.constructElement("xpath", '//*[text()="Forgot Password"]')
+    page.click(webElement)
+    input_field = page.constructElement("id", "email")
+    input_field.send_keys("danish.soma@alphaitsystems.com")
+    time.sleep(3)
+    retrieve_button = driver.find_element(By.XPATH, "//*[text()='Retrieve password']")
+    action = ActionChains(driver)
+    action.click(retrieve_button).perform()
+    time.sleep(5)
+    ele = driver.find_element(By.TAG_NAME,"h1")
+    assert ele.is_displayed()
+
+forgotPassword()
