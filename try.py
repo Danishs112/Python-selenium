@@ -279,7 +279,6 @@ def fileUpload():
     upload_button = page.constructElement("id", "file-submit")
     upload_button.click()
     WebDriverWait(driver, 10).until(lambda d: page.constructElement("id", "uploaded-files").is_displayed())
-    time.sleep(10)
 
 
 # fileUpload()
@@ -383,11 +382,31 @@ def horizontal_slider():
     webElement = page.constructElement("xpath", '//*[text()="Horizontal Slider"]')
     page.click(webElement)
 
-    slider = driver.find_element(By.TAG_NAME,'input')
-    for index in range(0,8):
+    slider = driver.find_element(By.TAG_NAME, 'input')
+    for index in range(0, 8):
         slider.send_keys(Keys.ARROW_RIGHT)
 
-    time.sleep(12)
+
+# horizontal_slider()
 
 
-horizontal_slider()
+def hover():
+    page.waitForVisibility("xpath", '//*[text()="Hovers"]')
+    webElement = page.constructElement("xpath", '//*[text()="Hovers"]')
+    page.click(webElement)
+    time.sleep(10)
+
+    ist_image = driver.find_element(By.CSS_SELECTOR,'[alt="User Avatar"]:nth-child(1)')
+    action = ActionChains(driver)
+    action.move_to_element(ist_image).perform()
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[text()="View profile"]')))
+    view_profile = driver.find_element(By.XPATH, '//*[text()="View profile"]')
+    view_profile.click()
+    current_url = driver.current_url
+    assert "users/1" in current_url
+
+    WebDriverWait(driver,10).until(EC.visibility_of_element_located((By.TAG_NAME,'h1')))
+    not_found_element = driver.find_element(By.TAG_NAME, 'h1')
+    not_found_element.is_displayed()
+
+hover()
