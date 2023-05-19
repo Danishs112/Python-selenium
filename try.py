@@ -543,4 +543,16 @@ def javascriptPromptAlert():
     assert word in output.text
 
 
-javascriptPromptAlert()
+# javascriptPromptAlert()
+
+
+def KeyPresses():
+    page.waitForVisibility("xpath", '//*[text()="Key Presses"]')
+    webElement = page.constructElement("xpath", '//*[text()="Key Presses"]')
+    page.click(webElement)
+    key_presses = driver.find_element(By.ID,'target')
+    key_presses.send_keys(Keys.ENTER)
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'result')))
+
+
+KeyPresses()
