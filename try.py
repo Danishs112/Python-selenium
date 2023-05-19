@@ -725,3 +725,17 @@ def accordian():
 
 
 # accordian()
+
+
+def selectable_control():
+    selectable_lst = driver.find_elements(By.CSS_SELECTOR,'#selectable li')
+    for element in selectable_lst:
+        xpath = "//*[text()='" + element.text + "']"
+        ele = driver.find_element(By.XPATH,xpath)
+        ele.click()
+        class_name = ele.get_attribute("class")
+        assert 'ui-selected' in class_name
+        time.sleep(2)
+        print(class_name)
+
+selectable_control()
