@@ -460,4 +460,26 @@ def jqueryUIElementsBackToJQueryUI():
     assert content.is_displayed()
 
 
-jqueryUIElementsBackToJQueryUI()
+# jqueryUIElementsBackToJQueryUI()
+
+
+def jqueryUIElementDownloads():
+    page.waitForVisibility("xpath", '//*[text()="JQuery UI Menus"]')
+    webElement = page.constructElement("xpath", '//*[text()="JQuery UI Menus"]')
+    page.click(webElement)
+
+    enabled_button = page.constructElement("xpath", '//ul[@id="menu"]//li[2]')
+    enabled_button.click()
+
+    WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, '//*[text()="Downloads"]')))
+    back_to_ui_button = page.constructElement("xpath", '//*[text()="Downloads"]')
+    back_to_ui_button.click()
+
+    WebDriverWait(driver,10).until(EC.element_to_be_clickable((By.LINK_TEXT,'CSV')))
+    csv_button = driver.find_element(By.LINK_TEXT,'CSV')
+    csv_button.click()
+
+    time.sleep(10)
+
+
+jqueryUIElementDownloads()
