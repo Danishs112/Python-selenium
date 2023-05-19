@@ -434,9 +434,30 @@ def inputs():
     page.waitForVisibility("xpath", '//*[text()="Inputs"]')
     webElement = page.constructElement("xpath", '//*[text()="Inputs"]')
     page.click(webElement)
-    input_field = driver.find_element(By.CSS_SELECTOR,'[type="number"]')
+    input_field = driver.find_element(By.CSS_SELECTOR, '[type="number"]')
     input_field.send_keys(12324)
     time.sleep(5)
 
 
 # inputs()
+
+def jqueryUIElementsBackToJQueryUI():
+    page.waitForVisibility("xpath", '//*[text()="JQuery UI Menus"]')
+    webElement = page.constructElement("xpath", '//*[text()="JQuery UI Menus"]')
+    page.click(webElement)
+
+    enabled_button = page.constructElement("xpath", '//ul[@id="menu"]//li[2]')
+    enabled_button.click()
+    time.sleep(5)
+
+    WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, '//*[text()="Back to JQuery UI"]')))
+    back_to_ui_button = page.constructElement("xpath", '//*[text()="Back to JQuery UI"]')
+    back_to_ui_button.click()
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'content')))
+    menu_button = driver.find_element(By.LINK_TEXT, 'Menu')
+    menu_button.click()
+    content = driver.find_element(By.CLASS_NAME, 'example')
+    assert content.is_displayed()
+
+
+jqueryUIElementsBackToJQueryUI()
