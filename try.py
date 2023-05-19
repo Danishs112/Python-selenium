@@ -396,7 +396,7 @@ def hover():
     page.click(webElement)
     time.sleep(10)
 
-    ist_image = driver.find_element(By.CSS_SELECTOR,'[alt="User Avatar"]:nth-child(1)')
+    ist_image = driver.find_element(By.CSS_SELECTOR, '[alt="User Avatar"]:nth-child(1)')
     action = ActionChains(driver)
     action.move_to_element(ist_image).perform()
     WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[text()="View profile"]')))
@@ -405,9 +405,26 @@ def hover():
     current_url = driver.current_url
     assert "users/1" in current_url
 
-    WebDriverWait(driver,10).until(EC.visibility_of_element_located((By.TAG_NAME,'h1')))
+    WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.TAG_NAME, 'h1')))
     not_found_element = driver.find_element(By.TAG_NAME, 'h1')
     not_found_element.is_displayed()
+    time.sleep(10)
 
-hover()
 
+# hover()
+
+def scroll_to_bottom():
+    driver.find_element(By.TAG_NAME,'body').send_keys(Keys.END)
+    time.sleep(2)
+
+
+def infiniteScroll():
+    page.waitForVisibility("xpath", '//*[text()="Infinite Scroll"]')
+    webElement = page.constructElement("xpath", '//*[text()="Infinite Scroll"]')
+    page.click(webElement)
+    count = 10
+    for _ in range(0, count):
+        scroll_to_bottom()
+
+
+infiniteScroll()
