@@ -6,7 +6,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 
 class BasePage(object):
-    def __init__(self, driver, base_url="https://the-internet.herokuapp.com"):
+    def __init__(self, driver, base_url="http://www.uitestpractice.com/"):
         self.base_url = base_url
         self.driver = driver
         self.driver.maximize_window()

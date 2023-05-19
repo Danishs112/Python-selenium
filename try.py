@@ -1,13 +1,14 @@
 import time
+
+import requests
 from selenium import webdriver
-from selenium.common import TimeoutException, NoSuchFrameException
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
-from urllib3.util import wait
+
 
 from base_class import BasePage
 from selenium.webdriver import ActionChains, Keys
@@ -589,6 +590,119 @@ def notification_messages():
 
     element = driver.find_element(By.XPATH,'//div[@id="flash-messages"]//div[@id="flash"]')
 
-    element.is_displayed()
+    assert element.is_displayed()
 
 # notification_messages()
+
+
+def redirection_link():
+    page.waitForVisibility("xpath", '//*[text()="Redirect Link"]')
+    webElement = page.constructElement("xpath", '//*[text()="Redirect Link"]')
+    page.click(webElement)
+    here_button = driver.find_element(By.ID,'redirect')
+    here_button.click()
+    status_button = driver.find_element(By.XPATH,'//*[@class="example"]//ul//li//a')
+    redirect_url = status_button.get_attribute("href")
+    driver.get(redirect_url)
+    assert redirect_url == driver.current_url
+
+
+# redirection_link()
+
+
+def broken_images():
+    page.waitForVisibility("xpath", '//*[text()="Broken Images"]')
+    webElement = page.constructElement("xpath", '//*[text()="Broken Images"]')
+    page.click(webElement)
+
+    images = driver.find_elements(By.TAG_NAME,'img')
+    for image in images:
+        src = image.get_attribute("src")
+        response = requests.head(src)
+        if response.status_code != 200:
+            print(src)
+
+
+
+#broken_images()
+
+
+def drag_and_drop():
+    # page.waitForVisibility("xpath", '//*[text()="Drag and Drop"]')
+    # webElement = page.constructElement("xpath", '//*[text()="Drag and Drop"]')
+    # page.click(webElement)
+    # time.sleep(5)
+    source_element = driver.find_element(By.ID,'draggable')
+    target_element = driver.find_element(By.ID,'droppable')
+    #
+    actions = ActionChains(driver)
+    #
+    # actions.click_and_hold(source_element).move_to_element(target_element).release().perform()
+
+    actions.drag_and_drop(source_element, target_element).perform()
+
+
+# drag_and_drop()
+
+
+def double_click():
+    button = driver.find_element(By.CLASS_NAME,'btn-default')
+    actions = ActionChains(driver)
+    actions.double_click(button).perform()
+    alert = WebDriverWait(driver, 10).until(EC.alert_is_present())
+    text = alert.text
+    print(text)
+
+
+
+# double_click()
+
+
+def iframe():
+    word ="danish"
+    iframe = driver.find_element(By.NAME,'iframe_a')
+    driver.switch_to.frame(iframe)
+    input_field = driver.find_element(By.ID,'name')
+    input_field.send_keys(word)
+
+    text = input_field.get_attribute("value")
+    assert word == text
+    time.sleep(10)
+
+# iframe()
+
+def new_tab():
+    button = driver.find_element(By.ID,'Button')
+    button.click()
+    original_tab =  driver.current_window_handle
+    for tab in driver.window_handles:
+        if tab != original_tab:
+            driver.switch_to.window(tab)
+            break
+    iframe()
+
+
+
+
+# new_tab()
+
+def new_window():
+    button = driver.find_element(By.CSS_SELECTOR,'.container.Compli button')
+    button.click()
+
+    original_window = driver.current_window_handle
+
+    for window in driver.window_handles:
+        if window != original_window:
+            driver.switch_to.window(window)
+            break
+
+    play_button = driver.find_element(By.CLASS_NAME,'ytp-play-button')
+    play_button.click()
+    time.sleep(3)
+    play_button.click()
+    time.sleep(10)
+
+new_window()
+
+
