@@ -9,7 +9,6 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.wait import WebDriverWait
 
-
 from base_class import BasePage
 from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.support.select import Select
@@ -95,6 +94,8 @@ def AddRemove():
     page.waitForVisibility("xpath", '//*[@id="elements"]//button')
     webElement1 = page.constructElement("xpath", '//*[@id="elements"]//button')
     webElement1.click()
+
+
 #
 #
 # AddRemove()
@@ -108,6 +109,8 @@ def Checkboxes():
     assert WebElement.is_selected() == False
     webElement1 = page.constructElement("xpath", '//*[@id="checkboxes"]//input[2]')
     assert webElement1.is_selected() == True
+
+
 #
 #
 # Checkboxes()
@@ -129,6 +132,8 @@ def contextMenu():
     action = ActionChains(driver)
     action.context_click(webElement1).perform()
     print("danish")
+
+
 #
 #
 # contextMenu()
@@ -143,24 +148,26 @@ def DynamicControls():
     page.click(webElement)
 
     assert webElement.is_selected() == True
-    button = page.constructElement("xpath",'//*[text()="Remove"]')
+    button = page.constructElement("xpath", '//*[text()="Remove"]')
     button.click()
     driver.implicitly_wait(2000)
     WebDriverWait(driver, 10).until(lambda d: driver.find_element("id", "message"))
     buttonElement = page.constructElement("xpath", '//*[text()="Add"]')
     buttonElement.click()
-    insertion_text = page.constructElement("xpath",'//*[text()="It\'s back!"]')
+    insertion_text = page.constructElement("xpath", '//*[text()="It\'s back!"]')
     WebDriverWait(driver, 10).until(lambda d: insertion_text)
     assert insertion_text.text == "It's back!"
 
     enable_button = page.constructElement("xpath", '//*[text()="Enable"]')
     enable_button.click()
-    disable_button = page.constructElement("xpath",'//*[text()="It\'s enabled!"]')
-    WebDriverWait(driver,10).until(lambda d:disable_button)
+    disable_button = page.constructElement("xpath", '//*[text()="It\'s enabled!"]')
+    WebDriverWait(driver, 10).until(lambda d: disable_button)
 
     input_field = page.constructElement("xpath", '//*[@id="input-example"]//input')
     input_field.send_keys("danish")
     assert input_field.get_attribute('value') == "danish"
+
+
 #
 # DynamicControls()
 
@@ -176,6 +183,8 @@ def DropDown():
     time.sleep(0.4)
     select.select_by_value("1")
     time.sleep(0.5)
+
+
 #
 #
 # DropDown()
@@ -200,6 +209,8 @@ def dynamicLoading1():
     time.sleep(5)
     element = driver.find_element(By.XPATH, '//*[text()="Hello World!"]')
     page.checkVisibility(element)
+
+
 #
 #
 # dynamicLoading1()
@@ -224,6 +235,7 @@ def dynamicLoading2():
     element = driver.find_element(By.XPATH, '//*[text()="Hello World!"]')
     page.checkVisibility(element)
 
+
 # dynamicLoading2()
 
 
@@ -242,6 +254,8 @@ def entryAd():
     close_button.click()
     status = modal_element.is_displayed()
     assert status is False
+
+
 #
 # entryAd()
 
@@ -355,13 +369,6 @@ def nestedFrames():
 
 
 # nestedFrames()
-
-
-def iframe():
-    pass
-
-
-# iframe()
 
 
 def geolocation():
@@ -567,18 +574,17 @@ def newWindowHandle():
     print(len(driver.window_handles))
     assert len(driver.window_handles) == 1
 
-    click_here = driver.find_element(By.LINK_TEXT,'Click Here')
+    click_here = driver.find_element(By.LINK_TEXT, 'Click Here')
 
     click_here.click()
 
-    WebDriverWait(driver,10).until(EC.number_of_windows_to_be(2))
+    WebDriverWait(driver, 10).until(EC.number_of_windows_to_be(2))
     for window_handle in driver.window_handles:
         if window_handle != original_window_handle:
             driver.switch_to.window(window_handle)
             break
 
     assert driver.title == "New Window"
-
 
 
 # newWindowHandle()
@@ -588,9 +594,10 @@ def notification_messages():
     webElement = page.constructElement("xpath", '//*[text()="Notification Messages"]')
     page.click(webElement)
 
-    element = driver.find_element(By.XPATH,'//div[@id="flash-messages"]//div[@id="flash"]')
+    element = driver.find_element(By.XPATH, '//div[@id="flash-messages"]//div[@id="flash"]')
 
     assert element.is_displayed()
+
 
 # notification_messages()
 
@@ -599,9 +606,9 @@ def redirection_link():
     page.waitForVisibility("xpath", '//*[text()="Redirect Link"]')
     webElement = page.constructElement("xpath", '//*[text()="Redirect Link"]')
     page.click(webElement)
-    here_button = driver.find_element(By.ID,'redirect')
+    here_button = driver.find_element(By.ID, 'redirect')
     here_button.click()
-    status_button = driver.find_element(By.XPATH,'//*[@class="example"]//ul//li//a')
+    status_button = driver.find_element(By.XPATH, '//*[@class="example"]//ul//li//a')
     redirect_url = status_button.get_attribute("href")
     driver.get(redirect_url)
     assert redirect_url == driver.current_url
@@ -615,7 +622,7 @@ def broken_images():
     webElement = page.constructElement("xpath", '//*[text()="Broken Images"]')
     page.click(webElement)
 
-    images = driver.find_elements(By.TAG_NAME,'img')
+    images = driver.find_elements(By.TAG_NAME, 'img')
     for image in images:
         src = image.get_attribute("src")
         response = requests.head(src)
@@ -623,8 +630,7 @@ def broken_images():
             print(src)
 
 
-
-#broken_images()
+# broken_images()
 
 
 def drag_and_drop():
@@ -632,8 +638,8 @@ def drag_and_drop():
     # webElement = page.constructElement("xpath", '//*[text()="Drag and Drop"]')
     # page.click(webElement)
     # time.sleep(5)
-    source_element = driver.find_element(By.ID,'draggable')
-    target_element = driver.find_element(By.ID,'droppable')
+    source_element = driver.find_element(By.ID, 'draggable')
+    target_element = driver.find_element(By.ID, 'droppable')
     #
     actions = ActionChains(driver)
     #
@@ -646,7 +652,7 @@ def drag_and_drop():
 
 
 def double_click():
-    button = driver.find_element(By.CLASS_NAME,'btn-default')
+    button = driver.find_element(By.CLASS_NAME, 'btn-default')
     actions = ActionChains(driver)
     actions.double_click(button).perform()
     alert = WebDriverWait(driver, 10).until(EC.alert_is_present())
@@ -654,27 +660,27 @@ def double_click():
     print(text)
 
 
-
 # double_click()
 
 
 def iframe():
-    word ="danish"
-    iframe = driver.find_element(By.NAME,'iframe_a')
+    word = "danish"
+    iframe = driver.find_element(By.NAME, 'iframe_a')
     driver.switch_to.frame(iframe)
-    input_field = driver.find_element(By.ID,'name')
+    input_field = driver.find_element(By.ID, 'name')
     input_field.send_keys(word)
 
     text = input_field.get_attribute("value")
     assert word == text
     time.sleep(10)
 
+
 # iframe()
 
 def new_tab():
-    button = driver.find_element(By.ID,'Button')
+    button = driver.find_element(By.ID, 'Button')
     button.click()
-    original_tab =  driver.current_window_handle
+    original_tab = driver.current_window_handle
     for tab in driver.window_handles:
         if tab != original_tab:
             driver.switch_to.window(tab)
@@ -682,12 +688,10 @@ def new_tab():
     iframe()
 
 
-
-
 # new_tab()
 
 def new_window():
-    button = driver.find_element(By.CSS_SELECTOR,'.container.Compli button')
+    button = driver.find_element(By.CSS_SELECTOR, '.container.Compli button')
     button.click()
 
     original_window = driver.current_window_handle
@@ -697,12 +701,27 @@ def new_window():
             driver.switch_to.window(window)
             break
 
-    play_button = driver.find_element(By.CLASS_NAME,'ytp-play-button')
+    play_button = driver.find_element(By.CLASS_NAME, 'ytp-play-button')
     play_button.click()
     time.sleep(3)
     play_button.click()
     time.sleep(10)
 
-new_window()
+
+# new_window()
 
 
+def accordian():
+    accordian_lst = driver.find_elements(By.XPATH, '//*[@role="tablist"]//h3')
+    for acc in accordian_lst:
+        if acc.text == 'Selenium':
+            xpath = "//*[text()='Selenium ']"
+        else:
+            xpath = "//*[text()='" + acc.text + "']"
+
+        accordian = driver.find_element(By.XPATH, xpath)
+        accordian.click()
+        time.sleep(2)
+
+
+# accordian()
