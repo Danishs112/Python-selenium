@@ -414,7 +414,7 @@ def hover():
 # hover()
 
 def scroll_to_bottom():
-    driver.find_element(By.TAG_NAME,'body').send_keys(Keys.END)
+    driver.find_element(By.TAG_NAME, 'body').send_keys(Keys.END)
     time.sleep(2)
 
 
@@ -427,4 +427,16 @@ def infiniteScroll():
         scroll_to_bottom()
 
 
-infiniteScroll()
+# infiniteScroll()
+
+
+def inputs():
+    page.waitForVisibility("xpath", '//*[text()="Inputs"]')
+    webElement = page.constructElement("xpath", '//*[text()="Inputs"]')
+    page.click(webElement)
+    input_field = driver.find_element(By.CSS_SELECTOR,'[type="number"]')
+    input_field.send_keys(12324)
+    time.sleep(5)
+
+
+# inputs()
