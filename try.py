@@ -222,8 +222,7 @@ def dynamicLoading2():
     time.sleep(5)
     element = driver.find_element(By.XPATH, '//*[text()="Hello World!"]')
     page.checkVisibility(element)
-#
-#
+
 # dynamicLoading2()
 
 
@@ -550,9 +549,35 @@ def KeyPresses():
     page.waitForVisibility("xpath", '//*[text()="Key Presses"]')
     webElement = page.constructElement("xpath", '//*[text()="Key Presses"]')
     page.click(webElement)
-    key_presses = driver.find_element(By.ID,'target')
+    key_presses = driver.find_element(By.ID, 'target')
     key_presses.send_keys(Keys.ENTER)
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'result')))
 
 
-KeyPresses()
+# KeyPresses()
+
+
+def newWindowHandle():
+    page.waitForVisibility("xpath", '//*[text()="Multiple Windows"]')
+    webElement = page.constructElement("xpath", '//*[text()="Multiple Windows"]')
+    page.click(webElement)
+
+    original_window_handle = driver.current_window_handle
+    print(len(driver.window_handles))
+    assert len(driver.window_handles) == 1
+
+    click_here = driver.find_element(By.LINK_TEXT,'Click Here')
+
+    click_here.click()
+
+    WebDriverWait(driver,10).until(EC.number_of_windows_to_be(2))
+    for window_handle in driver.window_handles:
+        if window_handle != original_window_handle:
+            driver.switch_to.window(window_handle)
+            break
+
+    assert driver.title == "New Window"
+
+
+
+newWindowHandle()
