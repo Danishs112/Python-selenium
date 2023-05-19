@@ -580,4 +580,15 @@ def newWindowHandle():
 
 
 
-newWindowHandle()
+# newWindowHandle()
+
+def notification_messages():
+    page.waitForVisibility("xpath", '//*[text()="Notification Messages"]')
+    webElement = page.constructElement("xpath", '//*[text()="Notification Messages"]')
+    page.click(webElement)
+
+    element = driver.find_element(By.XPATH,'//div[@id="flash-messages"]//div[@id="flash"]')
+
+    element.is_displayed()
+
+# notification_messages()
