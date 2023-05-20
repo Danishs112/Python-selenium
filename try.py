@@ -811,4 +811,26 @@ def slider():
     action_chains = ActionChains(driver)
     action_chains.move_to_element(slider).click_and_hold().move_by_offset(scroll_distance, 0).release().perform()
     time.sleep(10)
-slider()
+# slider()
+
+
+def tab():
+    title = "title by danish"
+    content = "content on the tab"
+    tab = driver.find_element(By.ID,'add_tab')
+    tab.click()
+    WebDriverWait(driver,10).until(EC.visibility_of_element_located((By.CSS_SELECTOR,'[aria-labelledby="ui-id-28"]')))
+    tab = driver.find_element(By.CSS_SELECTOR,'[aria-labelledby="ui-id-28"]')
+    tab_title = tab.find_element(By.ID,'tab_title')
+    tab_content = tab.find_element(By.ID,'tab_content')
+    time.sleep(10)
+    add_button = tab.find_element(By.CSS_SELECTOR,'.ui-dialog-buttonset button')
+    tab_title.clear()
+    tab_title.send_keys("danish")
+    tab_content.clear()
+    tab_content.send_keys("content")
+    add_button.click()
+
+    time.sleep(10)
+
+tab()
