@@ -728,14 +728,87 @@ def accordian():
 
 
 def selectable_control():
-    selectable_lst = driver.find_elements(By.CSS_SELECTOR,'#selectable li')
+    selectable_lst = driver.find_elements(By.CSS_SELECTOR, '#selectable li')
     for element in selectable_lst:
         xpath = "//*[text()='" + element.text + "']"
-        ele = driver.find_element(By.XPATH,xpath)
+        ele = driver.find_element(By.XPATH, xpath)
         ele.click()
         class_name = ele.get_attribute("class")
         assert 'ui-selected' in class_name
         time.sleep(2)
-        print(class_name)
 
-selectable_control()
+
+# selectable_control()
+
+
+def dialog_control():
+    name = "danish"
+    email = "danishsoma112@gmail.com"
+    password = "password"
+    create_new_user = driver.find_element(By.ID, 'create-user')
+    create_new_user.click()
+    WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, '[aria-labelledby="ui-id-5"]')))
+    name_input = driver.find_element(By.ID, 'name')
+    email_input = driver.find_element(By.ID, 'email')
+    password_input = driver.find_element(By.ID, 'password')
+    name_input.clear()
+    name_input.send_keys(name)
+    email_input.clear()
+    email_input.send_keys(email)
+    password_input.clear()
+    password_input.send_keys(password)
+    create_an_account = driver.find_element(By.XPATH, '//*[text()="Create an account"]')
+    create_an_account.click()
+
+    table = driver.find_element(By.ID, 'users')
+    table_lst = table.find_elements(By.CSS_SELECTOR, 'tbody tr td')
+
+    all_value_exist = False
+    count = 0
+
+    for table in table_lst:
+        if table.text == name:
+            count = count + 1
+        elif table.text == email:
+            count = count + 1
+        elif table.text == password:
+            count = count + 1
+
+    if count == 3:
+        all_value_exist = True
+
+    assert all_value_exist == True
+
+
+# dialog_control()
+
+
+def menu_control():
+    items = driver.find_elements(By.CSS_SELECTOR,'#menu li[aria-haspopup="true"]')
+    for item in items:
+        item.click()
+        time.sleep(10)
+        break
+
+# menu_control()
+
+
+def progressbarControl():
+    download_button = driver.find_element(By.ID,'downloadButton')
+    download_button.click()
+    WebDriverWait(driver,10).until(EC.visibility_of_element_located((By.XPATH,'//*[text()="Complete!"]')))
+    complete_text = driver.find_element(By.XPATH,'//*[text()="Complete!"]')
+    print(complete_text.is_displayed())
+    assert complete_text.is_displayed()
+    time.sleep(10)
+
+# progressbarControl()
+
+
+def slider():
+    slider = driver.find_element(By.CSS_SELECTOR,'span.ui-slider-handle')
+    scroll_distance = 700
+    action_chains = ActionChains(driver)
+    action_chains.move_to_element(slider).click_and_hold().move_by_offset(scroll_distance, 0).release().perform()
+    time.sleep(10)
+slider()
